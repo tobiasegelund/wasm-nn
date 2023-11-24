@@ -2,10 +2,20 @@ use tract_onnx::prelude::*;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
-pub fn run() -> Vec<f32> {
-    println!("enter");
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+}
+
+macro_rules! console_log {
+    ($($t:tt)*) => (log(&format_args!($($t)*).to_string()))
+}
+
+#[wasm_bindgen]
+pub fn run(path: &str) -> Vec<f32> {
+    console_log!("{}", path);
     let model = tract_onnx::onnx()
-        .model_for_path("./nn/nn.onnx")
+        .model_for_path(path) // "./nn/nn.onnx"
         .unwrap()
         .into_optimized()
         .unwrap()
