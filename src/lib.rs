@@ -13,19 +13,21 @@ macro_rules! console_log {
 
 #[wasm_bindgen]
 pub fn run(path: &str) -> Vec<f32> {
+    // "./nn/nn.onnx"
     console_log!("{}", path);
-    let model = tract_onnx::onnx()
-        .model_for_path(path) // "./nn/nn.onnx"
-        .unwrap()
-        .into_optimized()
-        .unwrap()
-        .into_runnable()
-        .unwrap();
-
     let input = tract_ndarray::arr2(&[[1.0f32]]).into_tensor();
-    let output = model.run(tvec![input.into()]).unwrap();
-
-    output[0].to_owned().as_slice().unwrap().into()
+    if let Ok(model) = tract_onnx::onnx().model_for_path(path) {
+        let output = model
+            .into_optimized()
+            .unwrap()
+            .into_runnable()
+            .unwrap()
+            .run(tvec![input.into()])
+            .unwrap();
+        output[0].to_owned().as_slice().unwrap().into()
+    } else {
+        vec![10.0]
+    }
 }
 
 #[wasm_bindgen]
