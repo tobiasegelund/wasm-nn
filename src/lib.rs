@@ -1,6 +1,8 @@
 use tract_onnx::prelude::*;
 use wasm_bindgen::prelude::*;
 
+const FILE: &'static [u8] = include_bytes!("./nn.onnx");
+
 #[wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
@@ -16,7 +18,7 @@ pub fn run(path: &str) -> Vec<f32> {
     // "./nn/nn.onnx"
     console_log!("{}", path);
     let input = tract_ndarray::arr2(&[[1.0f32]]).into_tensor();
-    if let Ok(model) = tract_onnx::onnx().model_for_path(path) {
+    if let Ok(model) = tract_onnx::onnx().model_for_read(&mut FILE.as_ref()) {
         let output = model
             .into_optimized()
             .unwrap()
