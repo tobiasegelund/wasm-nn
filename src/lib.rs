@@ -14,9 +14,7 @@ macro_rules! console_log {
 }
 
 #[wasm_bindgen]
-pub fn run(path: &str) -> Vec<f32> {
-    // "./nn/nn.onnx"
-    console_log!("{}", path);
+pub fn run() -> Vec<f32> {
     let input = tract_ndarray::arr2(&[[1.0f32]]).into_tensor();
     if let Ok(model) = tract_onnx::onnx().model_for_read(&mut FILE.as_ref()) {
         let output = model
