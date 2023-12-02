@@ -1,4 +1,6 @@
-/target
+tract-wasm/target
+candle-wasm/target
+burn-wasm/target
 /Cargo.lock
 
 venv
