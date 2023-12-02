@@ -4,10 +4,10 @@
   </head>
   <body>
     <script type="module">
-      import init, { run, add } from "./pkg/wasm_nn.js";
+      import init, { inference, add } from "./pkg/wasm_nn.js";
       init().then(() => {
         console.log(add(1, 2));
-        console.log(run());
+        console.log(inference());
       });
     </script>
   </body>

@@ -14,7 +14,7 @@ macro_rules! console_log {
 }
 
 #[wasm_bindgen]
-pub fn run() -> Vec<f32> {
+pub fn inference() -> Vec<f32> {
     let input = tract_ndarray::arr2(&[[1.0f32]]).into_tensor();
     if let Ok(model) = tract_onnx::onnx().model_for_read(&mut FILE.as_ref()) {
         let output = model
@@ -26,8 +26,16 @@ pub fn run() -> Vec<f32> {
             .unwrap();
         output[0].to_owned().as_slice().unwrap().into()
     } else {
-        vec![10.0]
+        vec![0.0]
     }
+}
+
+#[wasm_bindgen]
+pub fn train() -> i32 {
+    if let Ok(model) = tract_onnx::onnx().proto_model_for_read(&mut FILE.as_ref()) {
+        // model
+    }
+    10
 }
 
 #[wasm_bindgen]
