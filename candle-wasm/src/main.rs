@@ -1,11 +1,10 @@
 // include!("nn.onnx");
+use prost::Message;
+
 const FILE: &'static [u8] = include_bytes!("./nn.onnx");
 
 fn main() {
-    // let model = candle_onnx::read_file("./src/nn.onnx");
-    // let model: candle_onnx::onnx::ModelProto =
-    // protobuf::Message::parse_from_bytes(FILE.as_ref()).unwrap();
-    // candle_onnx::onnx::ModelProto::from(FILE);
+    let model = candle_onnx::onnx::ModelProto::decode(FILE.as_ref()).unwrap();
 
-    // println!("{:?}", model)
+    println!("{:?}", model)
 }
