@@ -9,7 +9,11 @@ crate-type = ["cdylib"]
 [dependencies]
 getrandom = { version = "0.2", features = ["js"] }
 wasm-bindgen = "0.2.88"
-burn = { version = "0.11.0", features = ["wasm-sync", "train", "wgpu"] }
+burn = { version = "0.11.0", default-features = false, features = [
+  "autodiff",
+  "wasm-sync",
+  "train",
+] }
 serde = { version = "1.0.193", features = ["derive"] }
 burn-ndarray = "0.11.0"
 
