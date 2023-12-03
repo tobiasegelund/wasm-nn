@@ -447,7 +447,7 @@ dependencies = [
  "burn",
  "burn-import",
  "getrandom",
- "protobuf",
+ "serde",
  "wasm-bindgen",
 ]
 
