@@ -1,15 +1,13 @@
 import { useEffect } from "react"
-import init, { inference, add } from "../../pkg/burn_wasm.js";
+// import init, { inference } from "../../pkg/burn_wasm.js";
+import init, { inference, train } from "../../pkg_candle/candle_wasm.js";
 import * as ort from 'onnxruntime-web';
 
 export default function Display() {
   useEffect(() => {
     init().then(() => {
       // console.log(add(1, 2));
-      const start = new Date();
-      const end = new Date();
-      console.log(end.getTime() - start.getTime())
-      console.log(inference());
+      console.log(train());
       // console.log(train());
     });
 

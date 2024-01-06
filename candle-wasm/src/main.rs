@@ -1,6 +1,6 @@
 // include!("nn.onnx");
-use candle_core::{DType, Device, Result, Tensor, Var, D};
-use candle_nn::{loss, ops, Conv2d, Linear, Module, ModuleT, Optimizer, VarBuilder, VarMap};
+use candle_core::{DType, Device, Result, Tensor, D};
+use candle_nn::{loss, ops, Linear, Module, Optimizer, VarBuilder, VarMap};
 
 // Below fails due to `unsupported op_type Gemm for op NodeProto`
 // const FILE: &'static [u8] = include_bytes!("./nn.onnx");
@@ -48,10 +48,10 @@ impl Model {
 fn main() {
     let dev = Device::Cpu;
 
-    let x = Tensor::from_vec(vec![1., 2., 3., 4., 5., 1., 2., 3., 4.], 9, &dev).unwrap();
+    let x = Tensor::from_vec(vec![1f32, 2., 3., 4., 5., 1., 2., 3., 4.], (9, 1), &dev).unwrap();
     let y = Tensor::from_vec(vec![1u8, 2, 3, 4, 5, 2, 3, 4, 5], 9, &dev).unwrap();
 
-    let mut varmap = VarMap::new();
+    let varmap = VarMap::new();
     let vs = VarBuilder::from_varmap(&varmap, DType::F32, &dev);
     let model = Model::new(vs.clone()).unwrap();
 
@@ -60,7 +60,7 @@ fn main() {
     for epoch in 1..5 {
         let logits = model.forward(&x).unwrap();
         let log_sm = ops::log_softmax(&logits, D::Minus1).unwrap();
-        let loss = loss::nll(&log_sm, &x).unwrap();
+        let loss = loss::nll(&log_sm, &y).unwrap();
         sgd.backward_step(&loss).unwrap();
         println!(
             "{epoch:4} train loss: {:8.5}",
