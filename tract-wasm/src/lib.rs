@@ -9,9 +9,9 @@ extern "C" {
     fn log(s: &str);
 }
 
-macro_rules! console_log {
-    ($($t:tt)*) => (log(&format_args!($($t)*).to_string()))
-}
+// macro_rules! console_log {
+//     ($($t:tt)*) => (log(&format_args!($($t)*).to_string()))
+// }
 
 #[wasm_bindgen]
 pub fn inference() -> Vec<f32> {
@@ -30,13 +30,13 @@ pub fn inference() -> Vec<f32> {
     }
 }
 
-#[wasm_bindgen]
-pub fn train() -> i32 {
-    if let Ok(model) = tract_onnx::onnx().proto_model_for_read(&mut FILE.as_ref()) {
-        // model
-    }
-    10
-}
+// #[wasm_bindgen]
+// pub fn train() -> i32 {
+//     if let Ok(model) = tract_onnx::onnx().proto_model_for_read(&mut FILE.as_ref()) {
+//         // model
+//     }
+//     10
+// }
 
 #[wasm_bindgen]
 pub fn add(a: i32, b: i32) -> i32 {
