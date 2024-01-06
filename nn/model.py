@@ -9,13 +9,15 @@ torch.device("cpu")
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.fc1 = nn.Linear(10, 50)
-        self.fc2 = nn.Linear(50, 1)
+        self.fc1 = nn.Linear(1, 50)
+        self.fc2 = nn.Linear(50, 6)
 
     def forward(self, x):
-        x = self.fc1(F.relu(x))
-        x = self.fc2(F)
-        return F.softmax(x)
+        x = self.fc1(x)
+        x = F.relu(x)
+        x = self.fc2(x)
+        return F.softmax(x, dim=1)
+        # return x
 
 
 data = [
@@ -117,10 +119,11 @@ for epoch in range(NUM_EPOCHS):
     loss.backward()
     optimizer.step()
 
-    # Print training statistics
-    print(f'Epoch [{epoch+1}/{NUM_EPOCHS}], Loss: {loss.item()}')
+    print(f"Epoch [{epoch+1}/{NUM_EPOCHS}], Loss: {loss.item()}")
 
 model.eval()
+
+print(model.forward(x=X[:1, 0].reshape(-1, 1)))
 
 torch.onnx.export(
     model,
@@ -128,6 +131,6 @@ torch.onnx.export(
     "nn.onnx",
     export_params=True,
     opset_version=10,
-    input_names = ['input'],
-    output_names = ['output'],
+    input_names=["input"],
+    output_names=["output"],
 )

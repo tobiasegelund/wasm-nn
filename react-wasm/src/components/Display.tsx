@@ -7,10 +7,9 @@ export default function Display() {
     init().then(() => {
       // console.log(add(1, 2));
       const start = new Date();
-      inference()
       const end = new Date();
       console.log(end.getTime() - start.getTime())
-      // console.log(inference());
+      console.log(inference());
       // console.log(train());
     });
 
@@ -24,8 +23,7 @@ export default function Display() {
       const results = await session.run(feeds);
       const end = new Date();
       console.log(end.getTime() - start.getTime())
-      // console.log(results.output.data)
-      // console.log(results2.output.data)
+      console.log(results.output.data)
     }
     main();
 
