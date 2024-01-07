@@ -3,4 +3,6 @@ candle-wasm/target
 burn-wasm/target
 /Cargo.lock
 
+# .ipynb_checkpoints
+
 venv
