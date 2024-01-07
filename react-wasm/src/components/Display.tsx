@@ -1,13 +1,17 @@
 import { useEffect } from "react"
-import init, { inference, train } from "../../pkg/candle_wasm.js";
+import init, { train, Model } from "../../pkg/candle_wasm.js";
 import * as ort from 'onnxruntime-web';
 
 export default function Display() {
   useEffect(() => {
     init().then(() => {
       // console.log(add(1, 2));
-      train();
-      // console.log(inference())
+      const model = new Model();
+      console.log(model.train(2., 1));
+      console.log(model.train(2., 1));
+      console.log(model.train(2., 1));
+      // console.log(train(2., 1));
+      // console.log(inference_onnx())
     });
 
     async function main() {
@@ -17,7 +21,7 @@ export default function Display() {
 
       const feeds = { input: tensor };
       const results = await session.run(feeds);
-      console.log(results.output.data)
+      // console.log(results.output.data)
     }
     main();
 
