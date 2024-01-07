@@ -77,4 +77,8 @@ pub fn train() {
             loss.to_scalar::<f32>().unwrap(),
         );
     }
+
+    let x1 = Tensor::from_vec(vec![2f32], (1, 1), &dev).unwrap();
+    console_log!("{}", model.forward(&x1).unwrap());
+    console_log!("{}", model.forward(&x1).unwrap());
 }
