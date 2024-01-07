@@ -45,7 +45,7 @@ impl Model {
         self.ln2.forward(&x)
     }
 
-    pub fn train(&self, input: f32, label: u8) -> Vec<f32> {
+    pub fn train(&self, input: f32, label: u8) -> std::result::Result<Vec<f32>, JsError> {
         let x = Tensor::from_vec(vec![input], (1, 1), &DEVICE).unwrap();
         let y = Tensor::from_vec(vec![label], 1, &DEVICE).unwrap();
 
@@ -58,7 +58,7 @@ impl Model {
         sgd.backward_step(&loss).unwrap();
         let result = log_sm.clone().to_vec2::<f32>().unwrap();
 
-        result.get(0).unwrap().to_owned()
+        Ok(result.get(0).unwrap().to_owned())
     }
 }
 
