@@ -5,9 +5,19 @@ import Button from './components/Button';
 import './App.css'
 
 
+type OrtInferenceSession = ort.InferenceSession | null
+
+
 export default function App() {
-  const [session, setSession] = React.useState<ort.InferenceSession | null>(null)
-  const labels = [0, 1, 2, 3, 4, 5]
+  const [session, setSession] = React.useState<OrtInferenceSession>(null)
+  const [weights, setWeights] = React.useState([
+    {"id": 0, "weight": .9},
+    {"id": 1, "weight": .8},
+    {"id": 2, "weight": .7},
+    {"id": 3, "weight": .6},
+    {"id": 4, "weight": .5},
+    {"id": 5, "weight": .4},
+  ])
 
   React.useEffect(() => {
     // init().then(() => {
@@ -31,12 +41,15 @@ export default function App() {
       const tensor = new ort.Tensor('float32', data, [1, 1]);
 
       const feeds = { input: tensor };
-      try {
+      if (session !== null) {
         const results = await session.run(feeds);
-        const output = results.output.data
-        console.log(output)
-      } catch (err) {
-        console.error("Error during inference:", err);
+
+        const newWeights = (
+          Array.from(results.output.data)
+          .map((weight, index) => ({"id": index, "weight": weight}))
+          .sort((a, b) => b.weight - a.weight)
+        )
+        setWeights(newWeights)
       }
     })()
   }
@@ -45,7 +58,7 @@ export default function App() {
     <div>
       <h1> WASM </h1>
       <div className='buttons'>
-        {labels.map((i) => <Button value={i} handleClick={() => inference(i)} />)}
+        {weights.map((i) => <Button key={i.id} value={i.id} handleClick={() => inference(i.id)} />)}
       </div>
     </div>
   )
