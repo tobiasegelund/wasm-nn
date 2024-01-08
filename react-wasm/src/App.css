@@ -11,5 +11,14 @@
 
 .buttons-button {
   margin: 5px;
-  font-size: 32px;
+  font-size: 40px;
+}
+
+.button-weight {
+  font-size: 12px;
+}
+
+.last-clicked {
+  font-size: 24px;
+  border: 1cap;
 }

@@ -10,13 +10,14 @@ type OrtInferenceSession = ort.InferenceSession | null
 
 export default function App() {
   const [session, setSession] = React.useState<OrtInferenceSession>(null)
+  const [lastClicked, setLastClicked] = React.useState<number | null>(null)
   const [weights, setWeights] = React.useState([
-    {"id": 0, "weight": .9},
-    {"id": 1, "weight": .8},
-    {"id": 2, "weight": .7},
-    {"id": 3, "weight": .6},
-    {"id": 4, "weight": .5},
-    {"id": 5, "weight": .4},
+    {"id": 0, "weight": null},
+    {"id": 1, "weight": null},
+    {"id": 2, "weight": null},
+    {"id": 3, "weight": null},
+    {"id": 4, "weight": null},
+    {"id": 5, "weight": null},
   ])
 
   React.useEffect(() => {
@@ -34,6 +35,10 @@ export default function App() {
     }
     main();
   }, [])
+
+  function updateLastClicked(id: number) {
+    setLastClicked(id)
+  }
 
   function inference(input: number) {
     (async () => {
@@ -57,8 +62,14 @@ export default function App() {
   return (
     <div>
       <h1> WASM </h1>
+      <div className='last-clicked'>
+        {lastClicked}
+      </div>
       <div className='buttons'>
-        {weights.map((i) => <Button key={i.id} value={i.id} handleClick={() => inference(i.id)} />)}
+        {weights.map((i) => <Button key={i.id} value={i.id} weight={i.weight} handleClick={(() => {
+          inference(i.id);
+          updateLastClicked(i.id);
+          })} />)}
       </div>
     </div>
   )
