@@ -54,7 +54,7 @@ impl Model {
         let logits = self.forward(&x).unwrap();
         let log_sm = ops::softmax(&logits, D::Minus1).unwrap();
         let loss = loss::cross_entropy(&log_sm, &y).unwrap();
-        console_log!("LOSS: {}", loss.to_scalar::<f32>().unwrap());
+        // console_log!("LOSS: {}", loss.to_scalar::<f32>().unwrap());
         sgd.backward_step(&loss).unwrap();
         let result = log_sm.clone().to_vec2::<f32>().unwrap();
 
