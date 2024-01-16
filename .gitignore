@@ -6,3 +6,5 @@ burn-wasm/target
 .ipynb_checkpoints
 
 venv
+
+.vscode
